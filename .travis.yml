@@ -1,0 +1,32 @@
+language: emacs-lisp
+sudo: false
+addons:
+  apt:
+    packages:
+    - autogen
+    - ca-certificates
+    - curl
+    - gcc
+    - libgmp-dev
+    - m4
+    - make
+    - pkg-config
+    - xz-utils
+cache:
+  directories:
+  - $HOME/local
+before_install:
+  - sudo sh travis-ci/travis-gnutls.sh
+  - gnutls-cli -v
+  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > x.sh && source ./x.sh
+  - evm install $EVM_EMACS --use --skip
+  - cask
+env:
+  global:
+    - PATH=$HOME/local/bin:$PATH
+    - EVM_EMACS=emacs-git-snapshot-travis
+script:
+  - emacs --version
+  - cask build
+notifications:
+  email: false
