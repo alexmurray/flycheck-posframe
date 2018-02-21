@@ -7,6 +7,8 @@
 Display flycheck error messages via
 [posframe](https://github.com/tumashu/posframe).
 
+![flycheck-posframe screenshot](screenshots/flycheck-posframe.png)
+
 ## Installation
 
 ### MELPA [Coming Soon...]
