@@ -55,10 +55,15 @@
 (defvar flycheck-posframe-old-display-function nil
   "The former value of `flycheck-display-errors-function'.")
 
+(defvar flycheck-posframe-delete-posframe-hooks
+  '(pre-command-hook post-command-hook focus-out-hook)
+  "The hooks which should trigger automatic removal of the posframe.")
+
 (defun flycheck-posframe-delete-posframe ()
   "Delete messages currently being shown if any."
   (posframe-hide flycheck-posframe-buffer)
-  (remove-hook 'pre-command-hook 'flycheck-posframe-delete-posframe t))
+  (dolist (hook flycheck-posframe-delete-posframe-hooks)
+    (remove-hook hook 'flycheck-posframe-delete-posframe t)))
 
 (defun flycheck-posframe-format-errors (errors)
   "Formats ERRORS messages for display."
@@ -88,36 +93,32 @@
      flycheck-posframe-buffer
      :string (flycheck-posframe-format-errors errors)
      :position (point))
-    (add-hook 'pre-command-hook 'flycheck-posframe-delete-posframe nil t)))
+    (dolist (hook flycheck-posframe-delete-posframe-hooks)
+      (add-hook hook #'flycheck-posframe-delete-posframe nil t))))
 
 ;;;###autoload
 (define-minor-mode flycheck-posframe-mode
   "A minor mode to show Flycheck error messages in a posframe."
   :lighter nil
   :group 'flycheck-posframe
-  (let ((hooks '(post-command-hook focus-out-hook)))
-    (cond
-     ;; Use our display function and remember the old one but only if we haven't
-     ;; yet configured it, to avoid activating twice.
-     ((and flycheck-posframe-mode
-           (not (eq flycheck-display-errors-function
-                    #'flycheck-posframe-show-posframe)))
-      (setq flycheck-posframe-old-display-function
-            flycheck-display-errors-function
-            flycheck-display-errors-function
-            #'flycheck-posframe-show-posframe)
-      (dolist (hook hooks)
-        (add-hook hook #'flycheck-posframe-delete-posframe nil t)))
-     ;; Reset the display function and remove ourselves from all hooks but only
-     ;; if the mode is still active.
-     ((and (not flycheck-posframe-mode)
-           (eq flycheck-display-errors-function
-               #'flycheck-posframe-show-posframe))
-      (setq flycheck-display-errors-function
-            flycheck-posframe-old-display-function
-            flycheck-posframe-old-display-function nil)
-      (dolist (hook hooks)
-        (remove-hook hook 'flycheck-posframe-delete-posframe t))))))
+  (cond
+   ;; Use our display function and remember the old one but only if we haven't
+   ;; yet configured it, to avoid activating twice.
+   ((and flycheck-posframe-mode
+         (not (eq flycheck-display-errors-function
+                  #'flycheck-posframe-show-posframe)))
+    (setq flycheck-posframe-old-display-function
+          flycheck-display-errors-function
+          flycheck-display-errors-function
+          #'flycheck-posframe-show-posframe))
+   ;; Reset the display function and remove ourselves from all hooks but only
+   ;; if the mode is still active.
+   ((and (not flycheck-posframe-mode)
+         (eq flycheck-display-errors-function
+             #'flycheck-posframe-show-posframe))
+    (setq flycheck-display-errors-function
+          flycheck-posframe-old-display-function
+          flycheck-posframe-old-display-function nil))))
 
 (provide 'flycheck-posframe)
 ;;; flycheck-posframe.el ends here
