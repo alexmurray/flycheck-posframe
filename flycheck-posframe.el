@@ -63,7 +63,7 @@
   "Delete messages currently being shown if any."
   (posframe-hide flycheck-posframe-buffer)
   (dolist (hook flycheck-posframe-delete-posframe-hooks)
-    (remove-hook hook 'flycheck-posframe-delete-posframe t)))
+    (remove-hook hook #'flycheck-posframe-delete-posframe t)))
 
 (defun flycheck-posframe-format-errors (errors)
   "Formats ERRORS messages for display."
