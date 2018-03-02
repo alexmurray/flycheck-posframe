@@ -27,6 +27,16 @@ To enable then simply add the following to your init file:
   (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 ```
 
+We recommend to use [use-package](https://github.com/jwiegley/use-package) to
+make this automatic:
+
+```emacs-lisp
+(use-package flycheck-posframe
+  :ensure t
+  :after flycheck
+  :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+```
+
 ### Manual
 
 If you would like to install the package manually, download or clone it and
