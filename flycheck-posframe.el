@@ -107,18 +107,18 @@
    ((and flycheck-posframe-mode
          (not (eq flycheck-display-errors-function
                   #'flycheck-posframe-show-posframe)))
-    (setq flycheck-posframe-old-display-function
-          flycheck-display-errors-function
-          flycheck-display-errors-function
-          #'flycheck-posframe-show-posframe))
+    (setq-local flycheck-posframe-old-display-function
+                flycheck-display-errors-function)
+    (setq-local flycheck-display-errors-function
+                #'flycheck-posframe-show-posframe))
    ;; Reset the display function and remove ourselves from all hooks but only
    ;; if the mode is still active.
    ((and (not flycheck-posframe-mode)
          (eq flycheck-display-errors-function
              #'flycheck-posframe-show-posframe))
-    (setq flycheck-display-errors-function
-          flycheck-posframe-old-display-function
-          flycheck-posframe-old-display-function nil))))
+    (setq-local flycheck-display-errors-function
+                flycheck-posframe-old-display-function)
+    (setq-local flycheck-posframe-old-display-function nil))))
 
 (provide 'flycheck-posframe)
 ;;; flycheck-posframe.el ends here
