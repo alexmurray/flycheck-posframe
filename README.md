@@ -49,6 +49,32 @@ this:
 NOTE: This will also require the manual installation of `flycheck` if you have
 not done so already.
 
+## Configuration
+
+There are two settings which can be configured - the face which is used to show
+the error messages `flycheck-posframe-face` and a string which is used as the
+prefix for each error message `flycheck-posframe-error-prefix`.
+
+### `flycheck-posframe-face`
+
+By default `flycheck-posframe-face` inherits from the `default` face so should
+appear like the rest of the text in the buffer. If however you want to ensure
+messages stand-out you could configure it to inherit from the `error` face:
+
+```
+(set-face-attribute 'flycheck-posframe-face nil :inherit 'error)
+```
+
+### `flycheck-posframe-error-prefix`
+
+By default `flycheck-posframe-error-prefix` is set to "➤ ". If however you
+wanted to show each error message prefixed with the unicode WARNING SIGN symbol
+(U+26A0) "⚠ " you could configure it as follows:
+
+```
+(setq flycheck-posframe-error-prefix "\u26a0 ")
+```
+
 ## License
 
 Copyright © 2018 Alex Murray
