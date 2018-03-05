@@ -13,8 +13,6 @@ Display flycheck error messages via
 
 ### MELPA
 
-[Coming Soon...](https://github.com/melpa/melpa/pull/5338)
-
 The preferred way to install `flycheck-posframe` is via
 [MELPA](http://melpa.org) - then you can just <kbd>M-x package-install RET
 flycheck-posframe RET</kbd>
