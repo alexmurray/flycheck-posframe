@@ -51,28 +51,41 @@ not done so already.
 
 ## Configuration
 
-There are two settings which can be configured - the face which is used to show
-the error messages `flycheck-posframe-face` and a string which is used as the
-prefix for each error message `flycheck-posframe-error-prefix`.
+### Default Pretty Configuration
 
-### `flycheck-posframe-face`
+Calling `(flycheck-posframe-configure-pretty-defaults)` will configure
+`flycheck-posframe` to show warnings and errors with nicer faces (inheriting
+from `warning` and `error` respectively), and set the prefix for each to nicer
+unicode characters.
 
-By default `flycheck-posframe-face` inherits from the `default` face so should
-appear like the rest of the text in the buffer. If however you want to ensure
-messages stand-out you could configure it to inherit from the `error` face:
+### Manual Configuration
+
+There are a few settings which can be configured to customise the display of
+error messages. These include the faces which are used to show the error
+messages `flycheck-posframe-info-face`, `flycheck-posframe-warning-face` and
+`flycheck-posframe-error-face` and a string which is used as the prefix for
+each message `flycheck-posframe-info-prefix``flycheck-posframe-warning-prefix`
+and `flycheck-posframe-error-prefix`.
+
+#### `flycheck-posframe-LEVEL-face`
+
+By default each of `flycheck-posframe-LEVEL-face` inherits from the `default`
+face so should appear like the rest of the text in the buffer. If however you
+want to ensure error messages stand-out you could configure them to inherit
+from the `error` face:
 
 ```
-(set-face-attribute 'flycheck-posframe-face nil :inherit 'error)
+(set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error)
 ```
 
-### `flycheck-posframe-error-prefix`
+#### `flycheck-posframe-LEVEL-prefix`
 
-By default `flycheck-posframe-error-prefix` is set to "➤ ". If however you
-wanted to show each error message prefixed with the unicode WARNING SIGN symbol
+By default `flycheck-posframe-LEVEL-prefix` is set to "➤ ". If however you
+wanted to show each warning message prefixed with the unicode WARNING SIGN symbol
 (U+26A0) "⚠ " you could configure it as follows:
 
 ```
-(setq flycheck-posframe-error-prefix "\u26a0 ")
+(setq flycheck-posframe-warning-prefix "\u26a0 ")
 ```
 
 ## License

@@ -5,7 +5,7 @@
 ;; Author: Alex Murray <murray.alex@gmail.com>
 ;; Maintainer: Alex Murray <murray.alex@gmail.com>
 ;; URL: https://github.com/alexmurray/flycheck-posframe
-;; Version: 0.2
+;; Version: 0.3
 ;; Package-Requires: ((flycheck "0.24") (emacs "26") (posframe "0.1.0"))
 
 ;; This file is not part of GNU Emacs.
@@ -43,17 +43,53 @@
   :group 'flycheck
   :link '(url-link :tag "Github" "https://github.com/alexmurray/flycheck-posframe"))
 
-(defcustom flycheck-posframe-error-prefix "\u27a4 "
-  "String to be displayed before every error line in posframe."
+(defcustom flycheck-posframe-prefix "\u27a4 "
+  "String to be displayed before every default message in posframe."
+  :group 'flycheck-posframe
+  :type 'string
+  :package-version '(flycheck-posframe . "0.3"))
+
+(defcustom flycheck-posframe-info-prefix flycheck-posframe-prefix
+  "String to be displayed before every info message in posframe."
+  :group 'flycheck-posframe
+  :type 'string
+  :package-version '(flycheck-posframe . "0.3"))
+
+(defcustom flycheck-posframe-warning-prefix flycheck-posframe-prefix
+  "String to be displayed before every warning message in posframe."
+  :group 'flycheck-posframe
+  :type 'string
+  :package-version '(flycheck-posframe . "0.3"))
+
+(defcustom flycheck-posframe-error-prefix flycheck-posframe-prefix
+  "String to be displayed before every error message in posframe."
   :group 'flycheck-posframe
   :type 'string
   :package-version '(flycheck-posframe . "0.1"))
 
 (defface flycheck-posframe-face
   '((t :inherit default))
-  "The face to use for displaying messages in posframe."
+  "The default face to use for displaying messages in posframe."
   :group 'flycheck-posframe
   :package-version '(flycheck-posframe . "0.2"))
+
+(defface flycheck-posframe-info-face
+  '((t :inherit flycheck-posframe-face))
+  "The face to use for displaying info messages in posframe."
+  :group 'flycheck-posframe
+  :package-version '(flycheck-posframe . "0.3"))
+
+(defface flycheck-posframe-warning-face
+  '((t :inherit flycheck-posframe-face))
+  "The face to use for displaying warning messages in posframe."
+  :group 'flycheck-posframe
+  :package-version '(flycheck-posframe . "0.3"))
+
+(defface flycheck-posframe-error-face
+  '((t :inherit flycheck-posframe-face))
+  "The face to use for displaying warning messages in posframe."
+  :group 'flycheck-posframe
+  :package-version '(flycheck-posframe . "0.3"))
 
 (defvar flycheck-posframe-buffer "*flycheck-posframe-buffer*"
   "The posframe buffer name use by flycheck-posframe.")
@@ -71,18 +107,37 @@
   (dolist (hook flycheck-posframe-delete-posframe-hooks)
     (remove-hook hook #'flycheck-posframe-delete-posframe t)))
 
+(defun flycheck-posframe-get-prefix-for-error (err)
+  "Return the prefix which should be used to display ERR."
+  (pcase (flycheck-error-level err)
+    ('info flycheck-posframe-info-prefix)
+    ('warning flycheck-posframe-warning-prefix)
+    ('error flycheck-posframe-error-prefix)
+    (_ flycheck-posframe-prefix)))
+
+(defun flycheck-posframe-get-face-for-error (err)
+  "Return the face which should be used to display ERR."
+  (pcase (flycheck-error-level err)
+    ('info 'flycheck-posframe-info-face)
+    ('warning 'flycheck-posframe-warning-face)
+    ('error 'flycheck-posframe-error-face)
+    (_ 'flycheck-posframe-face)))
+
+(defun flycheck-posframe-format-error (err)
+  "Formats ERR for display."
+  (propertize (concat
+               (flycheck-posframe-get-prefix-for-error err)
+               (flycheck-error-format-message-and-id err))
+              'face
+              `(:inherit ,(flycheck-posframe-get-face-for-error err))) )
+
 (defun flycheck-posframe-format-errors (errors)
   "Formats ERRORS messages for display."
-  (let* ((messages-and-id (mapcar #'flycheck-error-format-message-and-id
-                                  (delete-dups errors)))
-         (messages (sort
-                    (mapcar
-                     (lambda (m) (concat flycheck-posframe-error-prefix m))
-                     messages-and-id)
-                    'string-lessp)))
-    (propertize (mapconcat 'identity messages "\n")
-                'face
-                '(:inherit flycheck-posframe-face))))
+  (let ((messages (sort
+                   (mapcar #'flycheck-posframe-format-error
+                           (delete-dups errors))
+                   'string-lessp)))
+    (mapconcat 'identity messages "\n")))
 
 (defun flycheck-posframe-show-posframe (errors)
   "Display ERRORS, using posframe.el library."
@@ -94,6 +149,14 @@
      :position (point))
     (dolist (hook flycheck-posframe-delete-posframe-hooks)
       (add-hook hook #'flycheck-posframe-delete-posframe nil t))))
+
+;;;###autoload
+(defun flycheck-posframe-configure-pretty-defaults ()
+  "Configure some nicer settings for prettier display."
+  (setq flycheck-posframe-warning-prefix "\u26a0 ")
+  (setq flycheck-posframe-error-prefix "\u274c ")
+  (set-face-attribute 'flycheck-posframe-warning-face nil :inherit 'warning)
+  (set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error))
 
 ;;;###autoload
 (define-minor-mode flycheck-posframe-mode
