@@ -108,6 +108,23 @@ Only the `background' is used in this face."
   '(pre-command-hook post-command-hook focus-out-hook)
   "The hooks which should trigger automatic removal of the posframe.")
 
+(defvar flycheck-posframe-width 80
+  "The default width of posframe.")
+
+(defcustom flycheck-posframe-inhibit-functions nil
+  "Functions to inhibit display of flycheck posframe."
+  :type 'hook
+  :group 'flycheck-posframe)
+
+(defun flycheck-posframe-preferred-width (message)
+  "Return suitable width for the MESSAGE to display.
+If the string to display is slightly bigger than `flycheck-posframe-width'
+then make an exception and use the string width instead."
+  (let ((width (string-width message)))
+		(if (> (abs (- width flycheck-posframe-width)) 10)
+			flycheck-posframe-width
+		  width)))
+
 (defun flycheck-posframe-hide-posframe ()
   "Hide messages currently being shown if any."
   ;; hide posframe instead of deleting it to avoid flicker or worse crashes etc
@@ -151,14 +168,18 @@ Only the `background' is used in this face."
 (defun flycheck-posframe-show-posframe (errors)
   "Display ERRORS, using posframe.el library."
   (flycheck-posframe-hide-posframe)
-  (when errors
+  (when (and errors
+             (not (run-hook-with-args-until-success 'flycheck-posframe-inhibit-functions)))
+	(let ((message (flycheck-posframe-format-errors errors)))
+	  (let ((width (flycheck-posframe-preferred-width message)))
     (posframe-show
      flycheck-posframe-buffer
-     :string (flycheck-posframe-format-errors errors)
+		 :string message
      :background-color (face-background 'flycheck-posframe-background-face nil t)
+		 :width width
      :position (point))
     (dolist (hook flycheck-posframe-hide-posframe-hooks)
-      (add-hook hook #'flycheck-posframe-hide-posframe nil t))))
+		  (add-hook hook #'flycheck-posframe-hide-posframe nil t))))))
 
 ;;;###autoload
 (defun flycheck-posframe-configure-pretty-defaults ()

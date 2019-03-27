@@ -88,6 +88,15 @@ wanted to show each warning message prefixed with the unicode WARNING SIGN symbo
 (setq flycheck-posframe-warning-prefix "\u26a0 ")
 ```
 
+#### `flycheck-posframe-width`
+
+By default `flycheck-posframe-width` is set to 80 characters. This is the width
+of the posframe displayed. If however you wanted to change this limit to something else.
+
+```
+(setq flycheck-posframe-width 40)
+```
+
 ## License
 
 Copyright © 2018 Alex Murray
