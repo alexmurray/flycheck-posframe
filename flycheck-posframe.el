@@ -172,13 +172,13 @@ then make an exception and use the string width instead."
              (not (run-hook-with-args-until-success 'flycheck-posframe-inhibit-functions)))
 	(let ((message (flycheck-posframe-format-errors errors)))
 	  (let ((width (flycheck-posframe-preferred-width message)))
-    (posframe-show
-     flycheck-posframe-buffer
-		 :string message
-     :background-color (face-background 'flycheck-posframe-background-face nil t)
-		 :width width
-     :position (point))
-    (dolist (hook flycheck-posframe-hide-posframe-hooks)
+      (posframe-show
+        flycheck-posframe-buffer
+		    :string message
+        :background-color (face-background 'flycheck-posframe-background-face nil t)
+		    :width width
+        :position (point))
+      (dolist (hook flycheck-posframe-hide-posframe-hooks)
 		  (add-hook hook #'flycheck-posframe-hide-posframe nil t))))))
 
 ;;;###autoload
