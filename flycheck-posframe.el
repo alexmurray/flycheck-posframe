@@ -126,7 +126,7 @@ Only the `background' is used in this face."
 (defface flycheck-posframe-border-face
   '((t))
   "The border color of the flycheck-posframe frame.
-Only the `background' is used in this face."
+Only the `foreground' is used in this face."
   :group 'flycheck-posframe
   :package-version '(flycheck-posframe . "0.6"))
 
@@ -199,7 +199,7 @@ Only the `background' is used in this face."
        :background-color (face-background 'flycheck-posframe-background-face nil t)
        :position (point)
        :internal-border-width flycheck-posframe-border-width
-       :internal-border-color (face-background 'flycheck-posframe-border-face nil t)
+       :internal-border-color (face-foreground'flycheck-posframe-border-face nil t)
        :poshandler poshandler))
     (dolist (hook flycheck-posframe-hide-posframe-hooks)
       (add-hook hook #'flycheck-posframe-hide-posframe nil t))))
