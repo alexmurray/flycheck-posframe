@@ -60,12 +60,18 @@ unicode characters.
 
 ### Manual Configuration
 
-There are a few settings which can be configured to customise the display of
-error messages. These include the faces which are used to show the error
-messages `flycheck-posframe-info-face`, `flycheck-posframe-warning-face` and
-`flycheck-posframe-error-face` and a string which is used as the prefix for
-each message `flycheck-posframe-info-prefix``flycheck-posframe-warning-prefix`
-and `flycheck-posframe-error-prefix`.
+There are a few settings which can be configured to customise the display
+of error messages. These include the faces which are used to show the error
+messages `flycheck-posframe-info-face`, `flycheck-posframe-warning-face`
+and `flycheck-posframe-error-face` and a string which is used as the prefix
+for each message
+`flycheck-posframe-info-prefix``flycheck-posframe-warning-prefix` and
+`flycheck-posframe-error-prefix`. The background colour can be specified as
+the `background` attribute of the `flycheck-posframe-background-face`
+face. `The position, as well as the border width and colour can also be
+customised via the `flycheck-posframe-position`,
+`flycheck-posframe-border-width` and `flycheck-posframe-border-color`
+variables respectively.
 
 #### `flycheck-posframe-LEVEL-face`
 
@@ -88,8 +94,40 @@ wanted to show each warning message prefixed with the unicode WARNING SIGN symbo
 (setq flycheck-posframe-warning-prefix "\u26a0 ")
 ```
 
+#### `flycheck-posframe-background-face`
+
+By default `flycheck-posframe-background-face` inherits from the default
+face, so the background colour should be the same as the standard window
+frame background colour. This can be customised like any other face (ie. by
+using `customize-face` or manually setting the `:background` face
+attribute)
+
+#### `flycheck-posframe-border-face`
+
+By default `flycheck-posframe-border-face` inherits from the default face,
+so the background colour should be the same as the standard foreground
+colour. This can be customised like any other face (ie. by using
+`customize-face` or manually setting the `:foreground` face attribute)
+
+#### `flycheck-posframe-border-width`
+
+By default `flycheck-posframe-border-width` is zero but this can be set to
+an integer number of pixels to specify the width of the border.
+
+#### `flycheck-posframe-position`
+
+By default `flycheck-posframe-position` is set to
+`point-bottom-left-corner` so that errors are shown just below point. This
+can be customised to any of the existing positions supported by
+`posframe`. For example, to display errors at the bottom-left of the
+window:
+
+```
+(setq flycheck-posframe-position 'window-bottom-left-corner)
+```
+
 ## License
 
-Copyright © 2018 Alex Murray
+Copyright © 2019 Alex Murray
 
 Distributed under GNU GPL, version 3.
