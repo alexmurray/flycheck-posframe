@@ -5,7 +5,7 @@
 ;; Author: Alex Murray <murray.alex@gmail.com>
 ;; Maintainer: Alex Murray <murray.alex@gmail.com>
 ;; URL: https://github.com/alexmurray/flycheck-posframe
-;; Version: 0.5
+;; Version: 0.6
 ;; Package-Requires: ((flycheck "0.24") (emacs "26") (posframe "0.3.0"))
 
 ;; This file is not part of GNU Emacs.
