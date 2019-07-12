@@ -62,6 +62,12 @@
           (const :tag "Bottom left corner of point" point-bottom-left-corner))
   :package-version '(flycheck-posframe . "0.6"))
 
+(defcustom flycheck-posframe-border-width 0
+  "Width of the border for a flycheck-posframe frame."
+  :group 'flycheck-posframe
+  :type 'integer
+  :package-version '(flycheck-posframe . "0.6"))
+
 (defcustom flycheck-posframe-prefix "\u27a4 "
   "String to be displayed before every default message in posframe."
   :group 'flycheck-posframe
@@ -116,6 +122,13 @@
 Only the `background' is used in this face."
   :group 'flycheck-posframe
   :package-version '(flycheck-posframe . "0.4"))
+
+(defface flycheck-posframe-border-face
+  '((t))
+  "The border color of the flycheck-posframe frame.
+Only the `background' is used in this face."
+  :group 'flycheck-posframe
+  :package-version '(flycheck-posframe . "0.6"))
 
 (defvar flycheck-posframe-buffer "*flycheck-posframe-buffer*"
   "The posframe buffer name use by flycheck-posframe.")
@@ -185,6 +198,8 @@ Only the `background' is used in this face."
        :string (flycheck-posframe-format-errors errors)
        :background-color (face-background 'flycheck-posframe-background-face nil t)
        :position (point)
+       :internal-border-width flycheck-posframe-border-width
+       :internal-border-color (face-background 'flycheck-posframe-border-face nil t)
        :poshandler poshandler))
     (dolist (hook flycheck-posframe-hide-posframe-hooks)
       (add-hook hook #'flycheck-posframe-hide-posframe nil t))))
