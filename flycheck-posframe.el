@@ -199,7 +199,7 @@ Only the `foreground' is used in this face."
        :background-color (face-background 'flycheck-posframe-background-face nil t)
        :position (point)
        :internal-border-width flycheck-posframe-border-width
-       :internal-border-color (face-foreground'flycheck-posframe-border-face nil t)
+       :internal-border-color (face-foreground 'flycheck-posframe-border-face nil t)
        :poshandler poshandler))
     (dolist (hook flycheck-posframe-hide-posframe-hooks)
       (add-hook hook #'flycheck-posframe-hide-posframe nil t))))
