@@ -1,11 +1,11 @@
 ;;; flycheck-posframe.el --- Show flycheck error messages using posframe.el
 
-;; Copyright (C) 2018 Alex Murray
+;; Copyright (C) 2020 Alex Murray
 
 ;; Author: Alex Murray <murray.alex@gmail.com>
 ;; Maintainer: Alex Murray <murray.alex@gmail.com>
 ;; URL: https://github.com/alexmurray/flycheck-posframe
-;; Version: 0.6
+;; Version: 0.7
 ;; Package-Requires: ((flycheck "0.24") (emacs "26") (posframe "0.3.0"))
 
 ;; This file is not part of GNU Emacs.
