@@ -164,9 +164,9 @@ Only the `foreground' is used in this face."
   ;; on MacOS (see https://github.com/alexmurray/flycheck-posframe/issues/8)
   (posframe-hide flycheck-posframe-buffer)
   (dolist (hook flycheck-posframe-hide-posframe-hooks)
-    (remove-hook hook #'flycheck-posframe-hide-posframe t))
+    (remove-hook hook #'flycheck-posframe-hide-posframe nil))
   (dolist (hook flycheck-posframe-maybe-hide-posframe-hooks)
-    (remove-hook hook #'flycheck-posframe-maybe-hide-posframe t)))
+    (remove-hook hook #'flycheck-posframe-maybe-hide-posframe nil)))
 
 (defun flycheck-posframe-maybe-hide-posframe ()
   "Maybe hide messages currently being shown if any."
@@ -224,9 +224,9 @@ Only the `foreground' is used in this face."
        :poshandler poshandler
        :hidehandler #'posframe-hide))
     (dolist (hook flycheck-posframe-maybe-hide-posframe-hooks)
-      (add-hook hook #'flycheck-posframe-maybe-hide-posframe nil t))
+      (add-hook hook #'flycheck-posframe-maybe-hide-posframe nil nil))
     (dolist (hook flycheck-posframe-hide-posframe-hooks)
-      (add-hook hook #'flycheck-posframe-hide-posframe nil t))))
+      (add-hook hook #'flycheck-posframe-hide-posframe nil nil))))
 
 ;;;###autoload
 (defun flycheck-posframe-configure-pretty-defaults ()
