@@ -164,14 +164,14 @@ Only the `foreground' is used in this face."
   ;; on MacOS (see https://github.com/alexmurray/flycheck-posframe/issues/8)
   (posframe-hide flycheck-posframe-buffer)
   (dolist (hook flycheck-posframe-hide-posframe-hooks)
-    (remove-hook hook #'flycheck-posframe-hide-posframe))
-  (dolist (hook flycheck-posframe-maybe-hide-posframe-hooks)
-    (remove-hook hook #'flycheck-posframe-maybe-hide-posframe)))
+    (remove-hook hook #'flycheck-posframe-hide-posframe)))
 
 (defun flycheck-posframe-maybe-hide-posframe ()
   "Maybe hide messages currently being shown if any."
   (unless (flycheck-posframe-check-position)
-    (flycheck-posframe-hide-posframe)))
+    (flycheck-posframe-hide-posframe)
+    (dolist (hook flycheck-posframe-maybe-hide-posframe-hooks)
+      (remove-hook hook #'flycheck-posframe-maybe-hide-posframe))))
 
 (defun flycheck-posframe-get-prefix-for-error (err)
   "Return the prefix which should be used to display ERR."
