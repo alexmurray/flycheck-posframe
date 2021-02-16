@@ -222,7 +222,7 @@ Only the `foreground' is used in this face."
        :internal-border-width flycheck-posframe-border-width
        :internal-border-color (face-foreground 'flycheck-posframe-border-face nil t)
        :poshandler poshandler
-       :hidehandler #'posframe-hide))
+       :hidehandler #'posframe-hidehandler-when-buffer-switch))
     (dolist (hook flycheck-posframe-maybe-hide-posframe-hooks)
       (add-hook hook #'flycheck-posframe-maybe-hide-posframe))
     (dolist (hook flycheck-posframe-hide-posframe-hooks)
