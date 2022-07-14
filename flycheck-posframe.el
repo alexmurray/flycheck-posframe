@@ -68,6 +68,12 @@
   :type 'integer
   :package-version '(flycheck-posframe . "0.6"))
 
+(defcustom flycheck-posframe-border-use-error-face nil
+  "If non-nil, `flycheck-posframe-border-face' will be overriden by the foreground of the highest error level face."
+  :group 'flycheck-posframe
+  :type 'boolean
+  :package-version '(flycheck-posframe . "0.7"))
+
 (defcustom flycheck-posframe-prefix "\u27a4 "
   "String to be displayed before every default message in posframe."
   :group 'flycheck-posframe
@@ -166,6 +172,12 @@ Only the `foreground' is used in this face."
     ('error 'flycheck-posframe-error-face)
     (_ 'flycheck-posframe-face)))
 
+(defun flycheck-posframe-highest-error-level-face (errs)
+  "Return the face corresponding to the highest error level from ERRS."
+  (flycheck-posframe-get-face-for-error (cl-reduce
+					 (lambda (err1 err2) (if (flycheck-error-level-< err1 err2) err2 err1))
+					 errs)))
+
 (defun flycheck-posframe-format-error (err)
   "Formats ERR for display."
   (propertize (concat
@@ -201,7 +213,9 @@ Only the `foreground' is used in this face."
        :background-color (face-background 'flycheck-posframe-background-face nil t)
        :position (point)
        :internal-border-width flycheck-posframe-border-width
-       :internal-border-color (face-foreground 'flycheck-posframe-border-face nil t)
+       :internal-border-color (face-foreground (if flycheck-posframe-border-use-error-face
+						   (flycheck-posframe-highest-error-level-face errors)
+						 'flycheck-posframe-border-face) nil t)
        :poshandler poshandler
        :hidehandler #'flycheck-posframe-hidehandler))))
 
