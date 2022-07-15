@@ -109,6 +109,12 @@ so the background colour should be the same as the standard foreground
 colour. This can be customised like any other face (ie. by using
 `customize-face` or manually setting the `:foreground` face attribute)
 
+#### `flycheck-posframe-border-use-error-face`
+
+By default `flycheck-posframe-border-use-error-face` is nil. When non-nil, it
+will override `flycheck-posframe-border-face` with the foreground of the face
+for the highest error level that is shown by `posframe`.
+
 #### `flycheck-posframe-border-width`
 
 By default `flycheck-posframe-border-width` is zero but this can be set to
