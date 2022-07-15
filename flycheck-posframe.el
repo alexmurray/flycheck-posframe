@@ -140,7 +140,7 @@ Only the `foreground' is used in this face."
   "Last position for which a flycheck posframe was displayed.")
 
 (defun flycheck-posframe-check-position ()
-  "Update flycheck-posframe-last-position, returning t if there was no change."
+  "Update `flycheck-posframe-last-position', returning t if there was no change."
   (equal flycheck-posframe-last-position
          (setq flycheck-posframe-last-position
                (list (current-buffer) (buffer-modified-tick) (point)))))
