@@ -198,6 +198,10 @@ Only the `foreground' is used in this face."
   "Hide posframe if position has changed since last display."
   (not (flycheck-posframe-check-position)))
 
+(defun flycheck-posframe-point-position-p ()
+  "Return non-nil if `flycheck-posframe-position' is a point-based position."
+  (string-prefix-p "point-" (symbol-name flycheck-posframe-position)))
+
 (defun flycheck-posframe-show-posframe (errors)
   "Display ERRORS, using posframe.el library."
   (posframe-hide flycheck-posframe-buffer)
@@ -217,7 +221,9 @@ Only the `foreground' is used in this face."
 						   (flycheck-posframe-highest-error-level-face errors)
 						 'flycheck-posframe-border-face) nil t)
        :poshandler poshandler
-       :hidehandler #'flycheck-posframe-hidehandler))))
+       :hidehandler #'flycheck-posframe-hidehandler
+       :y-pixel-offset (when (flycheck-posframe-point-position-p)
+                         flycheck-posframe-border-width)))))
 
 ;;;###autoload
 (defun flycheck-posframe-configure-pretty-defaults ()
